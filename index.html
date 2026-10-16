@@ -11,7 +11,7 @@
   
   <!-- Google Fonts Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Tailwind CDN -->
@@ -91,7 +91,7 @@
     <div class="text-center max-w-3xl mx-auto mb-16">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20 mb-6">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        Semana 01 em Produção • 1 / 12 Concluído
+        Semana 01 Lançada • 1 de 12 Concluído
       </div>
 
       <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight sm:leading-none mb-6">
@@ -102,8 +102,7 @@
       </h1>
 
       <p class="text-lg text-slate-400 leading-relaxed mb-8">
-        Um compromisso público de execução e engenharia de software rápida (Ship Fast). 
-        A cada 7 dias, uma nova ferramenta funcional com deploy em produção, código aberto e utilidade real.
+        Um compromisso público de execução e engenharia rápida. A cada 7 dias, uma nova ferramenta funcional com deploy em produção, código aberto e utilidade real. Os cards abaixo são liberados e atualizados a cada lançamento.
       </p>
 
       <!-- Stats Bar -->
@@ -129,8 +128,8 @@
       <!-- Visual Progress Bar -->
       <div class="mt-8 max-w-2xl mx-auto">
         <div class="flex justify-between text-xs text-slate-400 font-mono mb-2">
-          <span>Semana 1: ChromaSnap</span>
-          <span>Semana 12: Final</span>
+          <span>Semana 01: Concluída</span>
+          <span>Meta: 12 Projetos</span>
         </div>
         <div class="w-full bg-slate-800/80 rounded-full h-3 p-0.5 overflow-hidden">
           <div class="bg-gradient-to-r from-brand-500 to-emerald-400 h-2 rounded-full transition-all duration-1000" style="width: 8.33%;"></div>
@@ -138,12 +137,12 @@
       </div>
     </div>
 
-    <!-- Filter Buttons -->
+    <!-- Section Header -->
     <div class="flex items-center justify-between flex-wrap gap-4 mb-8 border-b border-slate-800 pb-4">
       <div class="flex items-center gap-2">
         <h2 class="text-xl font-bold text-white flex items-center gap-2">
           <i data-lucide="layers" class="w-5 h-5 text-brand-400"></i>
-          Catálogo de Entregas
+          Projetos Lançados
         </h2>
       </div>
 
@@ -152,12 +151,12 @@
           ● 1 Lançado
         </span>
         <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400">
-          ○ 11 Em Breve
+          ○ 11 Restantes
         </span>
       </div>
     </div>
 
-    <!-- Projects Grid -->
+    <!-- Projects Grid (Incremental) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
       <!-- PROJETO 01: CHROMASNAP (LANÇADO) -->
@@ -176,10 +175,10 @@
           <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-brand-400 transition">
             ChromaSnap
           </h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">PaletaCores ExtratorFoto [Rank #138]</p>
+          <p class="text-xs font-mono text-slate-400 mb-3">Extrator de Paletas Harmônicas de Fotos</p>
 
           <p class="text-sm text-slate-300 leading-relaxed mb-6">
-            Arraste ou cole qualquer foto, extraia 5 cores harmônicas com algoritmo K-Means ponderado em Canvas, analise contraste WCAG 2.1 e copie classes prontas para Tailwind v4 e CSS variables.
+            Arraste ou cole qualquer foto, extraia 5 cores harmônicas com algoritmo K-Means ponderado em Canvas nativo, analise contraste WCAG 2.1 e copie classes prontas para Tailwind v4 e CSS variables.
           </p>
 
           <!-- Palette Swatches Visual Preview -->
@@ -212,350 +211,6 @@
              class="inline-flex items-center justify-center p-2 rounded-xl border border-slate-700 hover:border-slate-600 text-slate-300 hover:text-white bg-slate-900 transition" title="Repositório GitHub">
             <i data-lucide="github" class="w-4 h-4"></i>
           </a>
-        </div>
-      </div>
-
-      <!-- PROJETO 02: QUICKNOTES MENUBAR -->
-      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between opacity-85 hover:opacity-100 transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-              Semana 02 • Próximo
-            </span>
-            <span class="text-xs text-slate-500 font-mono">Prev. 23/10/2026</span>
-          </div>
-
-          <h3 class="text-2xl font-bold text-white mb-2">
-            QuickNotes
-          </h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">MenuBar Scratchpad + Voice Inbox [Rank #328]</p>
-
-          <p class="text-sm text-slate-400 leading-relaxed mb-6">
-            Bloco de notas ultrarrápido na barra de menus com atalho global para texto e gravação de áudio com transcrição local/API, com fluxo de Inbox e GTD nativo para macOS, Linux e Windows.
-          </p>
-
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Tauri</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Rust</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Svelte</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Whisper API</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">GTD</span>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-amber-400/80 font-mono flex items-center gap-1.5">
-            <i data-lucide="clock" class="w-3.5 h-3.5"></i> Em planejamento
-          </span>
-          <span class="text-xs text-slate-500">Semana 2</span>
-        </div>
-      </div>
-
-      <!-- PROJETO 03: ALERGIA ALIMENTAR SCANNER -->
-      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between opacity-85 hover:opacity-100 transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-slate-800 text-slate-400 border border-slate-700">
-              Semana 03
-            </span>
-            <span class="text-xs text-slate-500 font-mono">Prev. 30/10/2026</span>
-          </div>
-
-          <h3 class="text-2xl font-bold text-white mb-2">
-            AlergiaScanner
-          </h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">ScannerRotulo Alérgenos & Origem [Rank #14]</p>
-
-          <p class="text-sm text-slate-400 leading-relaxed mb-6">
-            PWA com OCR local (Tesseract.js) e IA para fotografar rótulos e detectar alérgenos ocultos, traços de glúten, leite e ingredientes de origem animal mascarados (ex: sodium tallowate).
-          </p>
-
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Next.js PWA</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Tesseract.js</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Gemini Flash</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Tailwind</span>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-slate-500 font-mono flex items-center gap-1.5">
-            <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Fila do desafio
-          </span>
-          <span class="text-xs text-slate-500">Semana 3</span>
-        </div>
-      </div>
-
-      <!-- PROJETO 04: ZAPIER TO N8N MIGRATION HELPER -->
-      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between opacity-85 hover:opacity-100 transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-slate-800 text-slate-400 border border-slate-700">
-              Semana 04
-            </span>
-            <span class="text-xs text-slate-500 font-mono">Prev. 06/11/2026</span>
-          </div>
-
-          <h3 class="text-2xl font-bold text-white mb-2">
-            ZapierToN8N
-          </h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">MigrationHelper + Railway AutoDeploy [Rank #125]</p>
-
-          <p class="text-sm text-slate-400 leading-relaxed mb-6">
-            Cole o JSON de um Zap do Zapier e converta a árvore de gatilhos e ações em um fluxo nativo do n8n, com opção de deploy em 1 clique no Railway via template dedicado.
-          </p>
-
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">TypeScript</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">n8n Workflow API</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Railway Deploy</span>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-slate-500 font-mono flex items-center gap-1.5">
-            <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Fila do desafio
-          </span>
-          <span class="text-xs text-slate-500">Semana 4</span>
-        </div>
-      </div>
-
-      <!-- PROJETO 05: CLIPBOARD MANAGER CRIPTOGRAFADO -->
-      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between opacity-85 hover:opacity-100 transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-slate-800 text-slate-400 border border-slate-700">
-              Semana 05
-            </span>
-            <span class="text-xs text-slate-500 font-mono">Prev. 13/11/2026</span>
-          </div>
-
-          <h3 class="text-2xl font-bold text-white mb-2">
-            VaultClipboard
-          </h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">Clipboard Manager Criptografado Local [Rank #321]</p>
-
-          <p class="text-sm text-slate-400 leading-relaxed mb-6">
-            Inspirado no Maccy e Clipman: aplicativo desktop cross-platform leve com histórico de cópia protegido por criptografia local AES-GCM em SQLite, busca fuzzy e atalhos rápidos.
-          </p>
-
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Tauri</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Rust</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">SQLite Cipher</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">macOS/Linux/Win</span>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-slate-500 font-mono flex items-center gap-1.5">
-            <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Fila do desafio
-          </span>
-          <span class="text-xs text-slate-500">Semana 5</span>
-        </div>
-      </div>
-
-      <!-- PROJETO 06: COMPROVANTE PIX ANTI-GOLPE -->
-      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between opacity-85 hover:opacity-100 transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-slate-800 text-slate-400 border border-slate-700">
-              Semana 06
-            </span>
-            <span class="text-xs text-slate-500 font-mono">Prev. 20/11/2026</span>
-          </div>
-
-          <h3 class="text-2xl font-bold text-white mb-2">
-            PixAntiGolpe
-          </h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">ComprovantePix Validador & Áudio [Rank #87]</p>
-
-          <p class="text-sm text-slate-400 leading-relaxed mb-6">
-            App para lojistas e autônomos que valida a liquidação real do Pix via webhook seguro, evitando comprovantes falsos e emitindo confirmação sonora via Web Audio API.
-          </p>
-
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">PWA</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Asaas Webhooks</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Web Audio API</span>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-slate-500 font-mono flex items-center gap-1.5">
-            <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Fila do desafio
-          </span>
-          <span class="text-xs text-slate-500">Semana 6</span>
-        </div>
-      </div>
-
-      <!-- PROJETO 07: MEI LIMITE RADAR -->
-      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between opacity-85 hover:opacity-100 transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-slate-800 text-slate-400 border border-slate-700">
-              Semana 07
-            </span>
-            <span class="text-xs text-slate-500 font-mono">Prev. 27/11/2026</span>
-          </div>
-
-          <h3 class="text-2xl font-bold text-white mb-2">
-            MEIRadar
-          </h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">Limite de Faturamento & Desenquadramento [Rank #156]</p>
-
-          <p class="text-sm text-slate-400 leading-relaxed mb-6">
-            Calculadora inteligente de teto anual (R$ 81k) com projeção pro-rata mensal, aviso de margem de tolerância de 20% e cálculo de impacto de transição para ME.
-          </p>
-
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Next.js</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">LocalStorage</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Tailwind</span>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-slate-500 font-mono flex items-center gap-1.5">
-            <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Fila do desafio
-          </span>
-          <span class="text-xs text-slate-500">Semana 7</span>
-        </div>
-      </div>
-
-      <!-- PROJETO 08: SIMULADOR INDEPENDÊNCIA FIRE -->
-      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between opacity-85 hover:opacity-100 transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-slate-800 text-slate-400 border border-slate-700">
-              Semana 08
-            </span>
-            <span class="text-xs text-slate-500 font-mono">Prev. 04/12/2026</span>
-          </div>
-
-          <h3 class="text-2xl font-bold text-white mb-2">
-            FIRE Brasil
-          </h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">Simulador de Independência Financeira [Rank #327]</p>
-
-          <p class="text-sm text-slate-400 leading-relaxed mb-6">
-            Simulador visual da regra dos 4%, taxas de retirada segura ajustadas para a realidade brasileira (IPCA+ e juros reais) e cálculo da data exata de liberdade financeira.
-          </p>
-
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">React</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Chart.js</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Tailwind</span>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-slate-500 font-mono flex items-center gap-1.5">
-            <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Fila do desafio
-          </span>
-          <span class="text-xs text-slate-500">Semana 8</span>
-        </div>
-      </div>
-
-      <!-- PROJETOS 09 A 12 RESUMIDOS -->
-      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between opacity-85 hover:opacity-100 transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-slate-800 text-slate-400 border border-slate-700">
-              Semana 09
-            </span>
-            <span class="text-xs text-slate-500 font-mono">Prev. 11/12/2026</span>
-          </div>
-          <h3 class="text-2xl font-bold text-white mb-2">DocToSwagger</h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">Crawler & OpenAPI Converter [Rank #360]</p>
-          <p class="text-sm text-slate-400 leading-relaxed mb-6">
-            Mapeia páginas web de documentação de APIs e converte endpoints e payloads automaticamente para a especificação Swagger/OpenAPI v3.
-          </p>
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Node CLI</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Cheerio</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">OpenAPI 3.1</span>
-          </div>
-        </div>
-        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-slate-500 font-mono flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Fila do desafio</span>
-          <span class="text-xs text-slate-500">Semana 9</span>
-        </div>
-      </div>
-
-      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between opacity-85 hover:opacity-100 transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-slate-800 text-slate-400 border border-slate-700">
-              Semana 10
-            </span>
-            <span class="text-xs text-slate-500 font-mono">Prev. 18/12/2026</span>
-          </div>
-          <h3 class="text-2xl font-bold text-white mb-2">PitchDeck HTML</h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">Markdown Presentation Maker [Rank #353]</p>
-          <p class="text-sm text-slate-400 leading-relaxed mb-6">
-            Editor markdown que compila apresentações interativas standalone com identidade visual configurável, transições animadas e exportação limpa em PDF 16:9.
-          </p>
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Next.js</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Reveal.js</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">PDF Generator</span>
-          </div>
-        </div>
-        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-slate-500 font-mono flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Fila do desafio</span>
-          <span class="text-xs text-slate-500">Semana 10</span>
-        </div>
-      </div>
-
-      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between opacity-85 hover:opacity-100 transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-slate-800 text-slate-400 border border-slate-700">
-              Semana 11
-            </span>
-            <span class="text-xs text-slate-500 font-mono">Prev. 25/12/2026</span>
-          </div>
-          <h3 class="text-2xl font-bold text-white mb-2">DiárioSintomas</h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">Rastreador de Enxaqueca [Rank #217]</p>
-          <p class="text-sm text-slate-400 leading-relaxed mb-6">
-            Registro com 2 toques de intensidade de dor, gatilhos (alimentos, tela, sono, ciclo) e geração de relatório para consulta médica sem salvar dados na nuvem.
-          </p>
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Next.js PWA</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">IndexedDB</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Local-First</span>
-          </div>
-        </div>
-        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-slate-500 font-mono flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Fila do desafio</span>
-          <span class="text-xs text-slate-500">Semana 11</span>
-        </div>
-      </div>
-
-      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between opacity-85 hover:opacity-100 transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-slate-800 text-slate-400 border border-slate-700">
-              Semana 12
-            </span>
-            <span class="text-xs text-slate-500 font-mono">Prev. 01/01/2027</span>
-          </div>
-          <h3 class="text-2xl font-bold text-white mb-2">FastHash Finder</h3>
-          <p class="text-xs font-mono text-slate-400 mb-3">DuplicateFinder por Hash Rápido [Rank #319]</p>
-          <p class="text-sm text-slate-400 leading-relaxed mb-6">
-            Varredor ultrarrápido de arquivos duplicados no disco usando hash multithread em Rust com interface reativa e remoção segura.
-          </p>
-          <div class="flex flex-wrap gap-1.5 mb-6">
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Tauri</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">Rust (BLAKE3)</span>
-            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-400">SolidJS</span>
-          </div>
-        </div>
-        <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-slate-500 font-mono flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Fila do desafio</span>
-          <span class="text-xs text-slate-500">Semana 12</span>
         </div>
       </div>
 

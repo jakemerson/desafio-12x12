@@ -22,7 +22,7 @@ Cada projeto deve resolver uma dor real, ser utilizável por pessoas reais, ter 
 | Sem | Projeto | Foco / Descrição | Stack | Lançamento | Status | Links |
 | :---: | :--- | :--- | :--- | :---: | :---: | :---: |
 | **01** | **ChromaSnap** | Extrator de paletas harmônicas de fotos via K-Means e Canvas, com contraste WCAG 2.1 e export para Tailwind v4 | React 19, TypeScript, Tailwind v4, Vite | 16/10/2026 | 🚀 Lançado | [Demo](https://jakemerson.github.io/chromasnap/) • [Repo](https://github.com/jakemerson/chromasnap) |
-| **02** | *A Definir* | Selecionando entre as ideias prioritárias (QuickNotes, AlergiaAlimentar Scanner, Pix AntiGolpe...) | - | - | ⏳ Em breve | - |
+| **02** | *A Definir* | Projeto a definir | - | - | ⏳ Em breve | - |
 | **03** | *A Definir* | Projeto 3 | - | - | ⏳ Em breve | - |
 | **04** | *A Definir* | Projeto 4 | - | - | ⏳ Em breve | - |
 | **05** | *A Definir* | Projeto 5 | - | - | ⏳ Em breve | - |
