@@ -4,7 +4,7 @@
 > Criado e mantido por **[@jakemerson](https://github.com/jakemerson)**.
 
 [![GitHub Pages](https://img.shields.io/badge/Vitrine-Online-6366f1?style=for-the-badge&logo=github)](https://jakemerson.github.io/desafio-12x12/)
-[![Progresso](https://img.shields.io/badge/Progresso-1%20de%2012-emerald?style=for-the-badge)](https://jakemerson.github.io/desafio-12x12/)
+[![Progresso](https://img.shields.io/badge/Progresso-2%20de%2012-emerald?style=for-the-badge)](https://jakemerson.github.io/desafio-12x12/)
 
 ---
 
@@ -22,7 +22,7 @@ Cada projeto deve resolver uma dor real, ser utilizável por pessoas reais, ter 
 | Sem | Projeto | Foco / Descrição | Stack | Lançamento | Status | Links |
 | :---: | :--- | :--- | :--- | :---: | :---: | :---: |
 | **01** | **ChromaSnap** | Extrator de paletas harmônicas de fotos via K-Means e Canvas, com contraste WCAG 2.1 e export para Tailwind v4 | React 19, TypeScript, Tailwind v4, Vite | 16/10/2026 | 🚀 Lançado | [Demo](https://jakemerson.github.io/chromasnap/) • [Repo](https://github.com/jakemerson/chromasnap) |
-| **02** | *A Definir* | Projeto a definir | - | - | ⏳ Em breve | - |
+| **02** | **SwitchAI** | Multi-Profile AI Desktop & Quota Hub para Claude, ChatGPT, Cursor e Antigravity com isolamento de perfis por cliente e monitor de limites | React 19, TypeScript, Tailwind v4, Electron | 16/10/2026 | 🚀 Lançado | [Demo](https://jakemerson.github.io/switchai/) • [Repo](https://github.com/jakemerson/switchai) |
 | **03** | *A Definir* | Projeto 3 | - | - | ⏳ Em breve | - |
 | **04** | *A Definir* | Projeto 4 | - | - | ⏳ Em breve | - |
 | **05** | *A Definir* | Projeto 5 | - | - | ⏳ Em breve | - |
