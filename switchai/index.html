@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SwitchAI — Multi-Profile AI Hub & Quota Monitor | Desafio 12x12</title>
+  <meta name="description" content="Gerenciador multi-perfil e monitor de cotas de IA para Claude, Cursor, Antigravity e ChatGPT/Codex. 100% Local-first na barra de menus do macOS." />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"],
+          },
+          colors: {
+            brand: {
+              50: "#eef2ff",
+              100: "#e0e7ff",
+              400: "#818cf8",
+              500: "#6366f1",
+              600: "#4f46e5",
+              700: "#4338ca",
+              900: "#312e81",
+              950: "#1e1b4b",
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    body {
+      background-color: #090D16;
+      color: #f1f5f9;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(14, 165, 233, 0.06) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+    .glass-panel {
+      background: rgba(18, 22, 34, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-panel:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+    .glow-purple {
+      box-shadow: 0 0 50px -10px rgba(99, 102, 241, 0.25);
+    }
+    .glow-emerald {
+      box-shadow: 0 0 40px -10px rgba(16, 185, 129, 0.25);
+    }
+    .grid-bg {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-brand-500 selection:text-white">
+
+  <!-- Navigation Bar -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-white/5 px-4 lg:px-8 py-3.5 transition-all">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-400 p-0.5 shadow-md shadow-brand-500/20">
+          <div class="w-full h-full bg-[#121217] rounded-[10px] flex items-center justify-center">
+            <i data-lucide="sparkles" class="w-4 h-4 text-emerald-400"></i>
+          </div>
+        </div>
+        <div>
+          <span class="text-base font-bold tracking-tight text-white flex items-center gap-1.5">
+            SwitchAI
+            <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-brand-500/20 text-brand-300 border border-brand-500/30 font-semibold">macOS</span>
+          </span>
+          <span class="block text-[11px] text-slate-400 leading-tight">Multi-Profile AI & Quota Hub</span>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="#demo" class="hover:text-white transition-colors">Demonstração</a>
+        <a href="#features" class="hover:text-white transition-colors">Recursos</a>
+        <a href="#providers" class="hover:text-white transition-colors">Provedores</a>
+        <a href="#screenshots" class="hover:text-white transition-colors">Telas</a>
+        <a href="#privacy" class="hover:text-white transition-colors">Privacidade</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="https://jakemerson.github.io/desafio-12x12/" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-all">
+          <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-brand-400"></i>
+          <span>Vitrine 12x12</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-16 pb-20 px-4 lg:px-8 grid-bg overflow-hidden">
+    <div class="max-w-4xl mx-auto text-center space-y-6">
+      
+      <!-- Challenge Badge -->
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel text-xs font-medium text-slate-300 border border-white/10 animate-fade-in">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Semana 02 • Desafio 12 Projetos em 12 Semanas</span>
+        <span class="text-slate-500">|</span>
+        <span class="text-emerald-400 font-semibold">100% Local-First</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
+        Gerencie Múltiplos Perfis de IA e Monitore Cotas em Tempo Real.
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+        O utilitário definitivo para a barra de menus do macOS. Alterne entre contas de clientes no <span class="text-white font-medium">Claude</span>, <span class="text-white font-medium">Cursor</span>, <span class="text-white font-medium">Antigravity</span> e <span class="text-white font-medium">ChatGPT</span> com instâncias totalmente isoladas e acompanhe limites de consumo antes do bloqueio.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <a href="#demo" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-brand-500 hover:bg-brand-600 text-white shadow-lg shadow-brand-500/30 transition-all hover:-translate-y-0.5">
+          <i data-lucide="play-circle" class="w-4 h-4"></i>
+          <span>Ver Demonstração</span>
+        </a>
+        <a href="#features" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold glass-panel hover:bg-white/10 text-slate-200 border border-white/10 transition-all">
+          <i data-lucide="layers" class="w-4 h-4 text-slate-400"></i>
+          <span>Como Funciona</span>
+        </a>
+      </div>
+
+      <!-- Quick Metrics Pill Strip -->
+      <div class="pt-8 flex flex-wrap justify-center gap-4 text-xs font-mono text-slate-400">
+        <div class="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>4 Provedores Unificados</span>
+        </div>
+        <div class="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Telemetria Oficial ao Vivo</span>
+        </div>
+        <div class="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Isolamento Total de Sessões</span>
+        </div>
+        <div class="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Zero Dados na Nuvem</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Video & GIF Demo Section (Placeholder Container) -->
+  <section id="demo" class="py-16 px-4 lg:px-8 border-t border-white/5 bg-[#0C101A]/60">
+    <div class="max-w-4xl mx-auto space-y-6">
+      
+      <div class="text-center space-y-2">
+        <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Experiência em Vídeo</span>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+          Veja o SwitchAI em Ação
+        </h2>
+        <p class="text-sm text-slate-400 max-w-xl mx-auto">
+          Gravação em tempo real mostrando a abertura na Menu Bar, o acionamento de instâncias e a leitura ao vivo das cotas de cada provedor.
+        </p>
+      </div>
+
+      <!-- Video / GIF Showcase Window Mockup -->
+      <div class="glass-panel rounded-2xl overflow-hidden border border-white/10 glow-purple shadow-2xl">
+        <!-- macOS Window Titlebar -->
+        <div class="bg-[#151924] px-4 py-3 border-b border-white/5 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+            <span class="ml-2 text-xs font-mono text-slate-400">SwitchAI — macOS Menu Bar Demo</span>
+          </div>
+          <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            ● Vídeo / GIF Demo
+          </span>
+        </div>
+
+        <!-- REAL VIDEO PLAYER -->
+        <div id="video-container" class="relative aspect-video w-full bg-[#0E121D] overflow-hidden">
+          <video 
+            controls 
+            autoplay 
+            muted 
+            loop 
+            playsinline 
+            poster="assets/img/shot_04_dual_instance.png"
+            class="w-full h-full object-cover"
+          >
+            <source src="assets/video/switchai-demo.mp4" type="video/mp4" />
+            Seu navegador não suporta reprodução de vídeos HTML5.
+          </video>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Screenshots Gallery Section -->
+  <section id="screenshots" class="py-16 px-4 lg:px-8 border-t border-white/5">
+    <div class="max-w-6xl mx-auto space-y-10">
+      
+      <div class="text-center space-y-2">
+        <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400">Galeria de Telas</span>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+          Interface Projetada para Foco e Produtividade
+        </h2>
+        <p class="text-sm text-slate-400 max-w-xl mx-auto">
+          Capturas reais da interface na barra de menus do macOS, monitoramento de cotas ao vivo e isolamento multi-instância.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Screenshot Card 1 -->
+        <div class="glass-panel rounded-xl overflow-hidden border border-white/10 flex flex-col hover:border-brand-500/40 transition-all group">
+          <div class="bg-[#151924] px-3.5 py-2.5 border-b border-white/5 flex items-center justify-between text-xs">
+            <span class="font-semibold text-slate-200">1. Hub na Menu Bar</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-400 border border-brand-500/20">Popover</span>
+          </div>
+          <!-- Image Box -->
+          <div class="bg-[#0E121D] flex items-center justify-center p-3 border-b border-white/5 overflow-hidden">
+            <img src="assets/img/shot_01_popover_overview.png" alt="SwitchAI Popover Overview" class="w-full h-auto rounded-lg shadow-lg group-hover:scale-[1.02] transition-transform duration-300" />
+          </div>
+          <div class="p-4 text-xs space-y-1.5 bg-[#121622]/50 flex-1 flex flex-col justify-between">
+            <div>
+              <p class="font-semibold text-slate-200">Visão Geral & Filtros</p>
+              <p class="text-slate-400 mt-1 leading-relaxed">Abas por provedor com contadores de instâncias ativas, atalhos de disparo Desktop/CLI e medidores de consumo.</p>
+            </div>
+            <div class="pt-2 text-[11px] font-mono text-brand-300 flex items-center gap-1">
+              <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>Abas com Badges: [All]² [Claude]</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screenshot Card 2 -->
+        <div class="glass-panel rounded-xl overflow-hidden border border-white/10 flex flex-col hover:border-emerald-500/40 transition-all group">
+          <div class="bg-[#151924] px-3.5 py-2.5 border-b border-white/5 flex items-center justify-between text-xs">
+            <span class="font-semibold text-slate-200">2. Cotas em Tempo Real</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Telemetria</span>
+          </div>
+          <!-- Image Box -->
+          <div class="bg-[#0E121D] flex items-center justify-center p-3 border-b border-white/5 overflow-hidden">
+            <img src="assets/img/shot_02_telemetry_quotas.png" alt="Telemetria de Cotas SwitchAI" class="w-full h-auto rounded-lg shadow-lg group-hover:scale-[1.02] transition-transform duration-300" />
+          </div>
+          <div class="p-4 text-xs space-y-1.5 bg-[#121622]/50 flex-1 flex flex-col justify-between">
+            <div>
+              <p class="font-semibold text-slate-200">5 Cotas Granulares</p>
+              <p class="text-slate-400 mt-1 leading-relaxed">Monitoramento ao vivo das cotas do Antigravity (Gemini Pro/Flash 5h/7d, Claude e Argon), Cursor e Codex.</p>
+            </div>
+            <div class="pt-2 text-[11px] font-mono text-emerald-300 flex items-center gap-1">
+              <i data-lucide="gauge" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>Previsão de reset de rate-limit</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screenshot Card 3 -->
+        <div class="glass-panel rounded-xl overflow-hidden border border-white/10 flex flex-col hover:border-purple-500/40 transition-all group">
+          <div class="bg-[#151924] px-3.5 py-2.5 border-b border-white/5 flex items-center justify-between text-xs">
+            <span class="font-semibold text-slate-200">3. Novo Perfil de IA</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">Setup 1-Click</span>
+          </div>
+          <!-- Image Box -->
+          <div class="bg-[#0E121D] flex items-center justify-center p-3 border-b border-white/5 overflow-hidden">
+            <img src="assets/img/shot_03_modal_profile.png" alt="Modal Novo Perfil de IA" class="w-full h-auto rounded-lg shadow-lg group-hover:scale-[1.02] transition-transform duration-300" />
+          </div>
+          <div class="p-4 text-xs space-y-1.5 bg-[#121622]/50 flex-1 flex flex-col justify-between">
+            <div>
+              <p class="font-semibold text-slate-200">Criação Instantânea</p>
+              <p class="text-slate-400 mt-1 leading-relaxed">Modal integrado para criar perfis isolados em segundos, escolhendo provedor, slug de terminal e diretório workspace.</p>
+            </div>
+            <div class="pt-2 text-[11px] font-mono text-purple-300 flex items-center gap-1">
+              <i data-lucide="folder-git-2" class="w-3.5 h-3.5 text-purple-400"></i>
+              <span>Geração automática de alias CLI</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Screenshot Card 4 -->
+        <div class="glass-panel rounded-xl overflow-hidden border border-white/10 flex flex-col hover:border-sky-500/40 transition-all group">
+          <div class="bg-[#151924] px-3.5 py-2.5 border-b border-white/5 flex items-center justify-between text-xs">
+            <span class="font-semibold text-slate-200">4. Múltiplas Instâncias</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20">Dual-Window</span>
+          </div>
+          <!-- Image Box -->
+          <div class="bg-[#0E121D] flex items-center justify-center p-3 border-b border-white/5 overflow-hidden">
+            <img src="assets/img/shot_04_dual_instance.png" alt="Dois Claude Desktops Simultâneos" class="w-full h-auto rounded-lg shadow-lg group-hover:scale-[1.02] transition-transform duration-300" />
+          </div>
+          <div class="p-4 text-xs space-y-1.5 bg-[#121622]/50 flex-1 flex flex-col justify-between">
+            <div>
+              <p class="font-semibold text-slate-200">Isolamento Real de Sessão</p>
+              <p class="text-slate-400 mt-1 leading-relaxed">Dois Claude Desktop abertos simultaneamente com contas e projetos distintos, sem conflito de cache ou cookies.</p>
+            </div>
+            <div class="pt-2 text-[11px] font-mono text-sky-300 flex items-center gap-1">
+              <i data-lucide="layers" class="w-3.5 h-3.5 text-sky-400"></i>
+              <span>Zero logout entre clientes</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Core Problems Solved -->
+  <section id="features" class="py-16 px-4 lg:px-8 border-t border-white/5 bg-[#0C101A]/40">
+    <div class="max-w-6xl mx-auto space-y-10">
+      
+      <div class="text-center space-y-2">
+        <span class="text-xs font-semibold uppercase tracking-wider text-brand-400">Por que o SwitchAI existe?</span>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+          As 4 Dores Reais que Ele Resolve no Dia a Dia
+        </h2>
+        <p class="text-sm text-slate-400 max-w-xl mx-auto">
+          Criado para desenvolvedores e consultores que utilizam IAs intensivamente em múltiplos contextos de trabalho.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Card 1 -->
+        <div class="glass-panel p-6 rounded-2xl border border-white/10 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-brand-500/10 border border-brand-500/20 text-brand-400 flex items-center justify-center">
+            <i data-lucide="users" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">1. O pesadelo de alternar contas</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Se você atende múltiplos clientes ou tem conta pessoal e corporativa, abrir o Claude Desktop ou Cursor exigia deslogar e logar novamente toda hora. O SwitchAI isola completamente o diretório de dados (<code class="text-xs bg-white/10 px-1.5 py-0.5 rounded font-mono">--user-data-dir</code>), permitindo abrir várias instâncias simultaneamente sem interferência.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-panel p-6 rounded-2xl border border-white/10 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="gauge" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">2. O susto do "Limite Atingido"</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Nada é mais frustrante do que estar no meio de um refactor complexo e ser bloqueado pelo limite de 5 horas do Claude Sonnet ou pela cota semanal do Gemini. O SwitchAI inspeciona os arquivos de telemetria oficiais e mostra barras claras de progresso e contagem de reset antes de você ficar sem IA.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass-panel p-6 rounded-2xl border border-white/10 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center">
+            <i data-lucide="terminal" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">3. Disparo instantâneo no Terminal (CLI)</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Com um único clique em <code class="text-xs bg-white/10 px-1.5 py-0.5 rounded font-mono">[ CLI ]</code>, o SwitchAI abre o terminal no diretório correto do projeto, injetando as variáveis de ambiente necessárias (<code class="text-xs bg-white/10 px-1.5 py-0.5 rounded font-mono">CLAUDE_CONFIG_DIR</code>) sem exigir que você decore comandos manuais longos.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="glass-panel p-6 rounded-2xl border border-white/10 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">4. Zero Risco de Vazamento de Credenciais</h3>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Diferente de extensões ou serviços web que pedem sua API Key e enviam para servidores desconhecidos, o SwitchAI roda 100% na sua máquina. Seus cookies, tokens e dados permanecem nas pastas nativas do sistema com máxima segurança.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Supported Providers Grid -->
+  <section id="providers" class="py-16 px-4 lg:px-8 border-t border-white/5">
+    <div class="max-w-6xl mx-auto space-y-10">
+      
+      <div class="text-center space-y-2">
+        <span class="text-xs font-semibold uppercase tracking-wider text-purple-400">Ecossistema Completo</span>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+          Os 4 Principais Provedores de IA Suportados
+        </h2>
+        <p class="text-sm text-slate-400 max-w-xl mx-auto">
+          Integração profunda com os ecossistemas mais utilizados por engenheiros de software modernos.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        
+        <!-- Provider 1: Claude -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/10 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-xl bg-[#31231A] text-[#D97757] border border-[#523A2A]/40 flex items-center justify-center font-bold text-lg">
+              C
+            </div>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#D97757]/10 text-[#D97757] border border-[#D97757]/20 font-semibold">
+              Anthropic
+            </span>
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-white">Claude</h4>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Claude Desktop e Claude Code CLI. Suporte a rate-limit de 5 horas e limite semanal de 7 dias com cronômetro de renovação.
+            </p>
+          </div>
+          <div class="pt-2 border-t border-white/5 text-[11px] font-mono text-slate-400 space-y-1">
+            <div>• Claude Desktop Isolado</div>
+            <div>• Claude Code CLI</div>
+            <div>• Rate-limit 5h & 7d</div>
+          </div>
+        </div>
+
+        <!-- Provider 2: Antigravity -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/10 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-xl bg-[#0E2838] text-[#38BDF8] border border-[#0284C7]/40 flex items-center justify-center font-bold text-lg">
+              A
+            </div>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#38BDF8]/10 text-[#38BDF8] border border-[#38BDF8]/20 font-semibold">
+              Google
+            </span>
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-white">Antigravity</h4>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Detecção ativa de instâncias Antigravity 2.0 e IDE. Leitura de 5 cotas oficiais via Google Cloud Code (Gemini, Claude e Argon).
+            </p>
+          </div>
+          <div class="pt-2 border-t border-white/5 text-[11px] font-mono text-slate-400 space-y-1">
+            <div>• Antigravity 2.0 & IDE</div>
+            <div>• Gemini Flash & Pro 5h/7d</div>
+            <div>• Argon Autocomplete Quota</div>
+          </div>
+        </div>
+
+        <!-- Provider 3: Cursor & GrokBot -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/10 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-xl bg-[#1E1E24] text-neutral-100 border border-neutral-700/60 flex items-center justify-center font-bold text-lg">
+              ⬡
+            </div>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">
+              Cursor & Grok
+            </span>
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-white">Cursor</h4>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              Múltiplos perfis do Cursor e suporte nativo ao Grok Bot. Telemetria dividida em 3 consumos: Grokbot, Cursor models e Other models.
+            </p>
+          </div>
+          <div class="pt-2 border-t border-white/5 text-[11px] font-mono text-slate-400 space-y-1">
+            <div>• Cursor Desktop & CLI</div>
+            <div>• Grok Bot Integrado</div>
+            <div>• 3 Consumos Independentes</div>
+          </div>
+        </div>
+
+        <!-- Provider 4: Codex / ChatGPT -->
+        <div class="glass-panel p-5 rounded-2xl border border-white/10 space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="w-10 h-10 rounded-xl bg-[#0F291E] text-[#10A37F] border border-[#10A37F]/40 flex items-center justify-center font-bold text-lg">
+              ◈
+            </div>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#10A37F]/10 text-[#10A37F] border border-[#10A37F]/20 font-semibold">
+              OpenAI
+            </span>
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-white">Codex / ChatGPT</h4>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              ChatGPT Desktop e Codex CLI nativo. Leitura da API oficial backend-api com plano de assinatura e ciclo de consumo de 30 dias.
+            </p>
+          </div>
+          <div class="pt-2 border-t border-white/5 text-[11px] font-mono text-slate-400 space-y-1">
+            <div>• ChatGPT Desktop & CLI</div>
+            <div>• Detecção de Plano e Ciclo</div>
+            <div>• Status da Cota em Tempo Real</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Privacy & Local-First Section -->
+  <section id="privacy" class="py-16 px-4 lg:px-8 border-t border-white/5 bg-[#0A0D17]">
+    <div class="max-w-4xl mx-auto glass-panel p-8 sm:p-10 rounded-3xl border border-emerald-500/20 glow-emerald text-center space-y-4">
+      
+      <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto">
+        <i data-lucide="lock" class="w-6 h-6"></i>
+      </div>
+
+      <h3 class="text-2xl font-bold text-white tracking-tight">
+        100% Local-First & Privacidade Absoluta
+      </h3>
+
+      <p class="text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+        O SwitchAI opera exclusivamente no seu Mac. Nenhuma credencial, cookie, token ou histórico de sessão é enviado para servidores externos. Suas configurações ficam salvas no seu disco local e as instâncias de IA utilizam as pastas protegidas nativas de cada provedor.
+      </p>
+
+      <div class="pt-4 flex flex-wrap justify-center gap-3 text-xs font-mono">
+        <span class="px-3 py-1 rounded-full bg-white/5 text-slate-300 border border-white/10">Zero Cloud Database</span>
+        <span class="px-3 py-1 rounded-full bg-white/5 text-slate-300 border border-white/10">Sem Telemetria Oculta</span>
+        <span class="px-3 py-1 rounded-full bg-white/5 text-slate-300 border border-white/10">Código Seguro & Auditado</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-white/5 bg-[#080B13] py-10 px-4 lg:px-8 text-center text-xs text-slate-500 space-y-3">
+    <div class="flex items-center justify-center gap-2">
+      <span class="text-slate-400 font-semibold">SwitchAI</span>
+      <span>•</span>
+      <span>Projeto 02 do <a href="https://jakemerson.github.io/desafio-12x12/" class="text-brand-400 hover:underline">Desafio 12 Projetos em 12 Semanas</a></span>
+    </div>
+    <p>
+      Desenvolvido por <a href="https://github.com/jakemerson" class="text-slate-300 hover:text-white transition-colors font-medium">@jakemerson</a>. Todos os direitos reservados.
+    </p>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
