@@ -91,7 +91,7 @@
     <div class="text-center max-w-3xl mx-auto mb-16">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-6">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        Semana 02 Lançada • 2 de 12 Concluído
+        Semana 05 Lançada • 3 de 12 Concluídos
       </div>
 
       <h1 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight sm:leading-none mb-6">
@@ -113,11 +113,11 @@
         </div>
         <div class="p-3 border-l border-slate-800">
           <span class="text-xs text-slate-400 font-medium block">Projetos Lançados</span>
-          <span class="text-2xl font-bold text-emerald-400 font-mono">02</span>
+          <span class="text-2xl font-bold text-emerald-400 font-mono">03</span>
         </div>
         <div class="p-3 border-l border-slate-800">
           <span class="text-xs text-slate-400 font-medium block">Progresso</span>
-          <span class="text-2xl font-bold text-brand-400 font-mono">16.6%</span>
+          <span class="text-2xl font-bold text-brand-400 font-mono">25.0%</span>
         </div>
         <div class="p-3 border-l border-slate-800">
           <span class="text-xs text-slate-400 font-medium block">Licença</span>
@@ -128,11 +128,11 @@
       <!-- Visual Progress Bar -->
       <div class="mt-8 max-w-2xl mx-auto">
         <div class="flex justify-between text-xs text-slate-400 font-mono mb-2">
-          <span>Semana 02: Concluída • Semana 03: Em Andamento</span>
+          <span>Semana 01, 02 e 05: Concluídas • Semana 03: Em Andamento</span>
           <span>Meta: 12 Projetos</span>
         </div>
         <div class="w-full bg-slate-800/80 rounded-full h-3 p-0.5 overflow-hidden">
-          <div class="bg-gradient-to-r from-brand-500 to-emerald-400 h-2 rounded-full transition-all duration-1000" style="width: 16.66%;"></div>
+          <div class="bg-gradient-to-r from-brand-500 to-emerald-400 h-2 rounded-full transition-all duration-1000" style="width: 25.00%;"></div>
         </div>
       </div>
     </div>
@@ -148,13 +148,13 @@
 
       <div class="flex items-center gap-2 text-xs font-mono">
         <span class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-          ● 2 Lançados
+          ● 3 Lançados
         </span>
         <span class="px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20">
           ⚡ 1 Em Andamento
         </span>
         <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400">
-          ○ 9 Restantes
+          ○ 8 Restantes
         </span>
       </div>
     </div>
@@ -343,6 +343,70 @@
             <i data-lucide="clock" class="w-3.5 h-3.5"></i>
             Em Desenvolvimento
           </span>
+        </div>
+      </div>
+
+      <!-- PROJETO 05: ZAPFLOW (ZAPIER TO N8N) -->
+      <div class="glass-card rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-rose-500/5 border-emerald-500/30">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl pointer-events-none group-hover:bg-rose-500/20 transition"></div>
+
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              Projeto 05 • Concluído
+            </span>
+            <span class="text-xs text-slate-400 font-mono">24/10/2026</span>
+          </div>
+
+          <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-rose-400 transition">
+            ZapFlow
+          </h3>
+          <p class="text-xs font-mono text-rose-400 mb-3">Zapier to n8n Workflow AST Migrator & ROI Engine</p>
+
+          <p class="text-sm text-slate-300 leading-relaxed mb-6">
+            Importe arquivos .zip ou .json do Zapier e gere workflows prontos para colar com Ctrl+V no n8n. Converte 30+ integrações, filtros, Paths multi-branch, variáveis <code>{{step__field}}</code>, com Landing Page interativa, simulador de economia com preços reais do Zapier e Deploy 1-Click na Railway.
+          </p>
+
+          <!-- Visual Preview -->
+          <div class="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800/80 mb-6 flex flex-col gap-2 shadow-inner font-mono text-[11px]">
+            <div class="flex items-center justify-between text-slate-400">
+              <span class="text-orange-400 font-semibold">{{1__email}}</span>
+              <span class="text-slate-500">→</span>
+              <span class="text-rose-400 font-bold">={{ $json.email }}</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80 text-[10px]">
+              <span class="text-emerald-400 font-semibold">Economia: até 98% (~$5/mês)</span>
+              <span class="px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300">n8n Schema v1</span>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-1.5 mb-6">
+            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-300">React 19</span>
+            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-300">TypeScript</span>
+            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-300">Tailwind v4</span>
+            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-300">AST Transpiler</span>
+            <span class="px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-slate-300">Railway 1-Click</span>
+          </div>
+        </div>
+
+        <!-- Links -->
+        <div class="pt-4 border-t border-slate-800 flex items-center justify-between gap-2 flex-wrap">
+          <a href="https://jakemerson.github.io/zapflow/" target="_blank" rel="noopener noreferrer"
+             class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-medium text-xs transition shadow-lg shadow-orange-600/20">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            Live Demo
+          </a>
+          <a href="https://railway.com/deploy/n8n-main-worker?referralCode=mdYrO9" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl border border-indigo-500/30 hover:border-indigo-500/60 text-indigo-300 hover:text-white bg-indigo-950/40 text-xs font-medium transition" title="Template Railway 1-Click">
+            <i data-lucide="server" class="w-3.5 h-3.5"></i>
+            <span>Deploy n8n</span>
+          </a>
+          <a href="https://github.com/jakemerson/zapflow" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center justify-center p-2 rounded-xl border border-slate-700 hover:border-slate-600 text-slate-300 hover:text-white bg-slate-900 transition" title="Repositório GitHub">
+            <i data-lucide="github" class="w-4 h-4"></i>
+          </a>
         </div>
       </div>
 
