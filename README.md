@@ -4,7 +4,7 @@
 > Criado e mantido por **[@jakemerson](https://github.com/jakemerson)**.
 
 [![GitHub Pages](https://img.shields.io/badge/Vitrine-Online-6366f1?style=for-the-badge&logo=github)](https://jakemerson.github.io/desafio-12x12/)
-[![Progresso](https://img.shields.io/badge/Progresso-4%20de%2012-emerald?style=for-the-badge)](https://jakemerson.github.io/desafio-12x12/)
+[![Progresso](https://img.shields.io/badge/Progresso-5%20de%2012-emerald?style=for-the-badge)](https://jakemerson.github.io/desafio-12x12/)
 
 ---
 
@@ -29,7 +29,7 @@ Cada projeto deve resolver uma dor real, ser utilizável por pessoas reais, ter 
 | **06** | **RótuloLimpo** | Auditor mobile de rótulos com OCR, base dupla de 150+ alérgenos/INCI/INS, semáforo gigante, áudio WAV PCM e Taptic Engine | React Native, Expo SDK 57, TypeScript | 25/10/2026 | 🚀 Lançado | [Repo](https://github.com/jakemerson/desafio-12x12/tree/main/06-alergia-alimentar-scanner) |
 | **07** | *A Definir* | Projeto 7 | - | - | ⏳ Em breve | - |
 | **08** | *A Definir* | Projeto 8 | - | - | ⏳ Em breve | - |
-| **09** | *A Definir* | Projeto 9 | - | - | ⏳ Em breve | - |
+| **09** | **CipherClip** | Gerenciador de área de transferência criptografado (AES-256-GCM), integração com macOS Keychain (safeStorage), atalho global Cmd+Shift+V e filtro anti-senhas | React 19, TypeScript, Tailwind v4, Electron | 25/10/2026 | 🚀 Lançado | [Repo](https://github.com/jakemerson/desafio-12x12/tree/main/09-clipboard-manager-criptografado) |
 | **10** | *A Definir* | Projeto 10 | - | - | ⏳ Em breve | - |
 | **11** | *A Definir* | Projeto 11 | - | - | ⏳ Em breve | - |
 | **12** | *A Definir* | Projeto 12 | - | - | ⏳ Em breve | - |
