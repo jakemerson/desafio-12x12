@@ -4,7 +4,7 @@
 > Criado e mantido por **[@jakemerson](https://github.com/jakemerson)**.
 
 [![GitHub Pages](https://img.shields.io/badge/Vitrine-Online-6366f1?style=for-the-badge&logo=github)](https://jakemerson.github.io/desafio-12x12/)
-[![Progresso](https://img.shields.io/badge/Progresso-3%20de%2012-emerald?style=for-the-badge)](https://jakemerson.github.io/desafio-12x12/)
+[![Progresso](https://img.shields.io/badge/Progresso-4%20de%2012-emerald?style=for-the-badge)](https://jakemerson.github.io/desafio-12x12/)
 
 ---
 
@@ -26,7 +26,7 @@ Cada projeto deve resolver uma dor real, ser utilizável por pessoas reais, ter 
 | **03** | **EchoLoop** | Gravador contínuo em buffer circular FIFO, agendador auto-start/stop, cofre permanente e transcrição multi-provedor (Groq, OpenAI, Deepgram, Fal, Nativo) | React Native, Expo SDK 57, TypeScript | Em breve | ⚡ Em Andamento | - |
 | **04** | **StickAnimator** | Pipeline automatizado para geração de animações stick figure (.styk / .stkz / MP4) a partir de keyframes esparsos | Python, Zstd, CairoSVG, OpenCV | Em breve | ⚡ Em Andamento | - |
 | **05** | **ZapFlow** | Conversor AST de Zaps (.zip/.json) para Workflows n8n, transpilador de expressões, simulador de ROI real e Deploy 1-Click Railway | React 19, TypeScript, Tailwind v4, Vite | 24/10/2026 | 🚀 Lançado | [Demo](https://jakemerson.github.io/zapflow/) • [Repo](https://github.com/jakemerson/zapflow) • [Deploy](https://railway.com/deploy/n8n-main-worker?referralCode=mdYrO9) |
-| **06** | *A Definir* | Projeto 6 | - | - | ⏳ Em breve | - |
+| **06** | **RótuloLimpo** | Auditor mobile de rótulos com OCR, base dupla de 150+ alérgenos/INCI/INS, semáforo gigante, áudio WAV PCM e Taptic Engine | React Native, Expo SDK 57, TypeScript | 25/10/2026 | 🚀 Lançado | [Repo](https://github.com/jakemerson/desafio-12x12/tree/main/06-alergia-alimentar-scanner) |
 | **07** | *A Definir* | Projeto 7 | - | - | ⏳ Em breve | - |
 | **08** | *A Definir* | Projeto 8 | - | - | ⏳ Em breve | - |
 | **09** | *A Definir* | Projeto 9 | - | - | ⏳ Em breve | - |
