@@ -142,7 +142,7 @@
             class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 border border-white/5 transition cursor-pointer"
           >
             <i data-lucide="monitor" class="w-3.5 h-3.5"></i>
-            Windows (WinGet / .exe)
+            Windows (WinGet)
           </button>
         </div>
 
@@ -594,13 +594,11 @@
         tabMac.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 border border-white/5 transition cursor-pointer';
         cmd.innerText = 'winget install jakemerson.CipherClip';
         highlights.innerHTML = `
-          <span>✓ Instalador NSIS oficial</span>
+          <span>✓ Instalador oficial via WinGet</span>
           <span>•</span>
           <span>✓ Atualizações via winget upgrade</span>
           <span>•</span>
-          <a href="https://github.com/jakemerson/cipherclip/releases/download/v1.0.5/CipherClip-Setup-1.0.5.exe" class="text-emerald-400 hover:underline inline-flex items-center gap-1 font-mono">
-            Download .exe Windows (x64)
-          </a>
+          <span>✓ Instalação silenciosa</span>
         `;
       }
       lucide.createIcons();
