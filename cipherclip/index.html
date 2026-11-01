@@ -86,7 +86,7 @@
 
       <nav class="hidden md:flex items-center gap-6 text-xs text-zinc-400 font-medium">
         <a href="#features" class="hover:text-white transition">Recursos</a>
-        <a href="#screens" class="hover:text-white transition">Screenshots</a>
+        <a href="#screens" class="hover:text-white transition">Interface</a>
         <a href="#pricing" class="hover:text-white transition">Preço</a>
         <a href="#install" class="hover:text-white transition">Como Instalar</a>
         <a href="#faq" class="hover:text-white transition">FAQ</a>
@@ -112,7 +112,7 @@
       <!-- Top Badge -->
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-emerald-950/60 border border-emerald-800/40 text-emerald-300">
         <span class="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span>v1.0.1 Oficial • macOS Menu Bar • Apple Silicon & Intel</span>
+        <span>v1.0.10 • macOS Menu Bar • Apple Silicon</span>
       </div>
 
       <!-- Main Headline -->
@@ -167,7 +167,7 @@
           <span>•</span>
           <span>✓ Atualizações via brew upgrade</span>
           <span>•</span>
-          <a href="https://github.com/jakemerson/homebrew-tap/releases/download/v1.0.5/CipherClip-1.0.5-mac.zip" class="text-emerald-400 hover:underline inline-flex items-center gap-1 font-mono">
+          <a href="https://github.com/jakemerson/homebrew-tap/releases/download/v1.0.10/CipherClip-1.0.10-mac.zip" class="text-emerald-400 hover:underline inline-flex items-center gap-1 font-mono">
             Download .zip Mac
           </a>
         </div>
@@ -189,167 +189,36 @@
     </div>
   </section>
 
-  <!-- Screenshots / App Mockups Section -->
+  <!-- Layouts do aplicativo -->
   <section id="screens" class="py-16 px-4 sm:px-6 max-w-5xl mx-auto w-full">
-    <div class="text-center space-y-3 mb-12">
-      <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Experiência Nativa no macOS</h2>
-      <p class="text-sm text-zinc-400 max-w-xl mx-auto">
-        Interface compacta, sem atrito e ergonomicamente desenhada para viver na barra de menus do seu Mac.
-      </p>
+    <div class="text-center space-y-3 mb-10">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Seu histórico sempre à mão e protegido</h2>
+      <p class="text-sm text-zinc-300 max-w-xl mx-auto leading-relaxed">Encontre textos, imagens e links copiados, filtre por categoria e mantenha informações sensíveis protegidas.</p>
+      <p class="text-xs text-zinc-400">Imagens conceituais: detalhes podem variar no aplicativo.</p>
     </div>
 
-    <!-- Grid de Screenshots em 2 colunas para legibilidade máxima 1:1 -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      
-      <!-- Screenshot 1: Popover Principal -->
-      <div class="glass-panel rounded-2xl overflow-hidden p-4 group flex flex-col justify-between">
-        <div class="flex items-center justify-between pb-3 border-b border-white/5 mb-3.5">
-          <div class="flex items-center gap-2 min-w-0">
-            <span class="w-3 h-3 rounded-full bg-red-500/80 shrink-0"></span>
-            <span class="w-3 h-3 rounded-full bg-amber-500/80 shrink-0"></span>
-            <span class="w-3 h-3 rounded-full bg-emerald-500/80 shrink-0"></span>
-            <span class="ml-1 text-xs font-mono text-zinc-200 truncate font-semibold">Histórico & Senhas Mascaradas</span>
-          </div>
-          <span class="text-[10px] font-mono text-emerald-400 shrink-0 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-800/30">⌘⇧V</span>
-        </div>
-        
-        <!-- Área da Imagem / Enquadramento Proporcional Vertical 1:1 -->
-        <div class="aspect-[440/590] rounded-xl bg-[#0f172a]/70 border border-white/10 flex flex-col items-center justify-center p-2 text-center relative overflow-hidden group-hover:border-emerald-500/40 transition shadow-xl">
-          <img 
-            id="print-spotlight"
-            src="./assets/spotlight-preview.png" 
-            alt="CipherClip Spotlight Popover" 
-            class="absolute inset-0 w-full h-full object-contain p-1.5 opacity-0 transition duration-300 z-10"
-            onload="this.classList.remove('opacity-0')"
-            onerror="this.style.display='none'"
-          />
-          <div class="space-y-2 pointer-events-none p-4">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 grid place-items-center text-emerald-400 mx-auto">
-              <i data-lucide="clipboard-list" class="w-6 h-6"></i>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-zinc-200">Popover Menu Bar</p>
-              <p class="text-xs text-zinc-500 mt-0.5 leading-snug">Navegação com setas e auto-paste com Enter</p>
-            </div>
-          </div>
-        </div>
-        <div class="mt-3.5 text-center">
-          <p class="text-xs font-medium text-zinc-300">Histórico de Colagem Rápida</p>
-          <p class="text-[11px] text-zinc-400 mt-0.5">Identificação do app de origem, tags de formato e senhas ocultas por padrão</p>
-        </div>
-      </div>
-
-      <!-- Screenshot 2: Escudo Anti-Senhas & Entropia -->
-      <div class="glass-panel rounded-2xl overflow-hidden p-4 group flex flex-col justify-between">
-        <div class="flex items-center justify-between pb-3 border-b border-white/5 mb-3.5">
-          <div class="flex items-center gap-2 min-w-0">
-            <span class="w-3 h-3 rounded-full bg-red-500/80 shrink-0"></span>
-            <span class="w-3 h-3 rounded-full bg-amber-500/80 shrink-0"></span>
-            <span class="w-3 h-3 rounded-full bg-emerald-500/80 shrink-0"></span>
-            <span class="ml-1 text-xs font-mono text-zinc-200 truncate font-semibold">Escudo Anti-Senhas</span>
-          </div>
-          <span class="text-[10px] font-mono text-amber-400 shrink-0 bg-amber-950/40 px-2 py-0.5 rounded border border-amber-800/30">Entropia</span>
-        </div>
-        
-        <div class="aspect-[440/590] rounded-xl bg-[#0f172a]/70 border border-white/10 flex flex-col items-center justify-center p-2 text-center relative overflow-hidden group-hover:border-amber-500/40 transition shadow-xl">
-          <img 
-            id="print-shield"
-            src="./assets/anti-password-shield.png" 
-            alt="Escudo Anti-Senhas CipherClip" 
-            class="absolute inset-0 w-full h-full object-contain p-1.5 opacity-0 transition duration-300 z-10"
-            onload="this.classList.remove('opacity-0')"
-            onerror="this.style.display='none'"
-          />
-          <div class="space-y-2 pointer-events-none p-4">
-            <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 grid place-items-center text-amber-400 mx-auto">
-              <i data-lucide="shield-alert" class="w-6 h-6"></i>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-zinc-200">Filtro de Entropia</p>
-              <p class="text-xs text-zinc-500 mt-0.5 leading-snug">Detecção de chaves de IA, senhas e tokens</p>
-            </div>
-          </div>
-        </div>
-        <div class="mt-3.5 text-center">
-          <p class="text-xs font-medium text-zinc-300">Proteção Inteligente Zero-Knowledge</p>
-          <p class="text-[11px] text-zinc-400 mt-0.5">Laboratório de Entropia de Shannon ajustável e regras ativas de bloqueio</p>
-        </div>
-      </div>
-
-      <!-- Screenshot 3: Desbloqueio por Touch ID & PIN -->
-      <div class="glass-panel rounded-2xl overflow-hidden p-4 group flex flex-col justify-between">
-        <div class="flex items-center justify-between pb-3 border-b border-white/5 mb-3.5">
-          <div class="flex items-center gap-2 min-w-0">
-            <span class="w-3 h-3 rounded-full bg-red-500/80 shrink-0"></span>
-            <span class="w-3 h-3 rounded-full bg-amber-500/80 shrink-0"></span>
-            <span class="w-3 h-3 rounded-full bg-emerald-500/80 shrink-0"></span>
-            <span class="ml-1 text-xs font-mono text-zinc-200 truncate font-semibold">Touch ID & PIN Lock</span>
-          </div>
-          <span class="text-[10px] font-mono text-sky-400 shrink-0 bg-sky-950/40 px-2 py-0.5 rounded border border-sky-800/30">⌘L</span>
-        </div>
-        
-        <div class="aspect-[440/590] rounded-xl bg-[#0f172a]/70 border border-white/10 flex flex-col items-center justify-center p-2 text-center relative overflow-hidden group-hover:border-sky-500/40 transition shadow-xl">
-          <img 
-            id="print-touchid"
-            src="./assets/touch-id-unlock.png" 
-            alt="Desbloqueio Touch ID CipherClip" 
-            class="absolute inset-0 w-full h-full object-contain p-1.5 opacity-0 transition duration-300 z-10"
-            onload="this.classList.remove('opacity-0')"
-            onerror="this.style.display='none'"
-          />
-          <div class="space-y-2 pointer-events-none p-4">
-            <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/30 grid place-items-center text-sky-400 mx-auto">
-              <i data-lucide="fingerprint" class="w-6 h-6"></i>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-zinc-200">Desbloqueio Biométrico</p>
-              <p class="text-xs text-zinc-500 mt-0.5 leading-snug">Touch ID ou PIN pessoal</p>
-            </div>
-          </div>
-        </div>
-        <div class="mt-3.5 text-center">
-          <p class="text-xs font-medium text-zinc-300">Cofre Trancado com Purga de RAM</p>
-          <p class="text-[11px] text-zinc-400 mt-0.5">Destrancamento em 1 toque com biometria do macOS ou senha mestre</p>
-        </div>
-      </div>
-
-      <!-- Screenshot 4: Tema & Configurações -->
-      <div class="glass-panel rounded-2xl overflow-hidden p-4 group flex flex-col justify-between">
-        <div class="flex items-center justify-between pb-3 border-b border-white/5 mb-3.5">
-          <div class="flex items-center gap-2 min-w-0">
-            <span class="w-3 h-3 rounded-full bg-red-500/80 shrink-0"></span>
-            <span class="w-3 h-3 rounded-full bg-amber-500/80 shrink-0"></span>
-            <span class="w-3 h-3 rounded-full bg-emerald-500/80 shrink-0"></span>
-            <span class="ml-1 text-xs font-mono text-zinc-200 truncate font-semibold">Aparência & Atalhos Globais</span>
-          </div>
-          <span class="text-[10px] font-mono text-emerald-400 shrink-0 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-800/30">Temas</span>
-        </div>
-        
-        <div class="aspect-[440/590] rounded-xl bg-[#0f172a]/70 border border-white/10 flex flex-col items-center justify-center p-2 text-center relative overflow-hidden group-hover:border-emerald-500/40 transition shadow-xl">
-          <img 
-            id="print-inspector"
-            src="./assets/crypto-inspector.png" 
-            alt="Configurações de Tema e Atalhos CipherClip" 
-            class="absolute inset-0 w-full h-full object-contain p-1.5 opacity-0 transition duration-300 z-10"
-            onload="this.classList.remove('opacity-0')"
-            onerror="this.style.display='none'"
-          />
-          <div class="space-y-2 pointer-events-none p-4">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 grid place-items-center text-emerald-400 mx-auto">
-              <i data-lucide="sun-medium" class="w-6 h-6"></i>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-zinc-200">Aparência Luminous</p>
-              <p class="text-xs text-zinc-500 mt-0.5 leading-snug">Modo Claro, Escuro e Sistema</p>
-            </div>
-          </div>
-        </div>
-        <div class="mt-3.5 text-center">
-          <p class="text-xs font-medium text-zinc-300">Customização de Atalhos e Visual</p>
-          <p class="text-[11px] text-zinc-400 mt-0.5">Seletor de temas Claro/Escuro/Sistema e ajuste de atalhos globais</p>
-        </div>
-      </div>
-
+    <div class="grid grid-cols-1 gap-6">
+      <figure class="glass-panel rounded-2xl overflow-hidden p-4 sm:p-5">
+        <figcaption class="mb-4">
+          <h3 class="text-base font-semibold text-white">Histórico de cópias</h3>
+          <p class="text-sm text-zinc-300 mt-1">Tudo o que você copia fica reunido em um histórico pesquisável. Senhas identificadas ficam ocultas por padrão.</p>
+        </figcaption>
+        <img src="./assets/layout-filtro-menu.png" alt="Ilustração do histórico de itens copiados e dos filtros de conteúdo" width="1517" height="1037" loading="lazy" class="block w-full h-auto rounded-xl" />
+      </figure>
+      <figure class="glass-panel rounded-2xl overflow-hidden p-4 sm:p-5">
+        <figcaption class="mb-4">
+          <h3 class="text-base font-semibold text-white">Encontre por categoria</h3>
+          <p class="text-sm text-zinc-300 mt-1">Separe imagens, textos, links, códigos, cores e senhas. Fixe os itens mais usados para encontrá-los rápido.</p>
+        </figcaption>
+        <img src="./assets/layout-filtros-visiveis.png" alt="Ilustração do histórico filtrado por imagens e do menu de categorias" width="1517" height="1037" loading="lazy" class="block w-full h-auto rounded-xl" />
+      </figure>
+      <figure class="glass-panel rounded-2xl overflow-hidden p-4 sm:p-5">
+        <figcaption class="mb-4">
+          <h3 class="text-base font-semibold text-white">Tranque seu cofre</h3>
+          <p class="text-sm text-zinc-300 mt-1">Tranque o cofre quando precisar e destranque com o método configurado, incluindo PIN ou Touch ID quando disponíveis.</p>
+        </figcaption>
+        <img src="./assets/layout-barra-lateral.png" alt="Ilustração do histórico e das configurações de segurança do CipherClip" width="1517" height="1037" loading="lazy" class="block w-full h-auto rounded-xl" />
+      </figure>
     </div>
   </section>
 
@@ -550,7 +419,7 @@
           <i data-lucide="chevron-down" class="w-4 h-4 text-zinc-400 group-open:rotate-180 transition"></i>
         </summary>
         <p class="mt-3 text-zinc-400 leading-relaxed">
-          O CipherClip já está disponível oficialmente para <strong>macOS</strong> (Apple Silicon & Intel via Homebrew) e <strong>Windows 10/11 x64</strong> (Instalador NSIS e WinGet). A versão para Linux (.AppImage e .deb) está em andamento. Sua licença PRO é universal para todas as plataformas.
+          O CipherClip já está disponível oficialmente para <strong>macOS</strong> (Apple Silicon via Homebrew) e <strong>Windows 10/11 x64</strong> (Instalador NSIS e WinGet). A versão para Linux (.AppImage e .deb) está em andamento. Sua licença PRO é universal para todas as plataformas.
         </p>
       </details>
     </div>
@@ -585,7 +454,7 @@
           <span>•</span>
           <span>✓ Atualizações via brew upgrade</span>
           <span>•</span>
-          <a href="https://github.com/jakemerson/homebrew-tap/releases/download/v1.0.5/CipherClip-1.0.5-mac.zip" class="text-emerald-400 hover:underline inline-flex items-center gap-1 font-mono">
+          <a href="https://github.com/jakemerson/homebrew-tap/releases/download/v1.0.10/CipherClip-1.0.10-mac.zip" class="text-emerald-400 hover:underline inline-flex items-center gap-1 font-mono">
             Download .zip Mac
           </a>
         `;
