@@ -37,7 +37,7 @@ Cada projeto deve resolver uma dor real, ser utilizável por pessoas reais, ter 
 ### ⚡ Projetos em Andamento (Sem numeração de semana fixa)
 - **EchoLoop:** Gravador contínuo em buffer circular FIFO, agendador auto-start/stop, cofre permanente e transcrição multi-provedor (Groq, OpenAI, Deepgram, Fal, Nativo) • [Repo](https://github.com/jakemerson/desafio-12x12/tree/main/03-audio-loop-recorder)
 - **RótuloLimpo:** Auditor mobile de rótulos com OCR, base dupla de 150+ alérgenos/INCI/INS, semáforo gigante, áudio WAV PCM e Taptic Engine • [Repo](https://github.com/jakemerson/desafio-12x12/tree/main/06-alergia-alimentar-scanner)
-- **FireBR:** Simulador FIRE com 10.000 simulações Monte Carlo via Web Workers no cliente, imposto inflacionário Fisher pós-IR, Cone de Probabilidade e Guardrails Guyton-Klinger • [Demo](https://jakemerson.github.io/desafio-12x12/10-simulador-independencia-fire/dist/) • [Repo](https://github.com/jakemerson/desafio-12x12/tree/main/10-simulador-independencia-fire)
+- **FireBR:** Simulador de cenários de independência financeira com Monte Carlo, projeções e teste de crises • [Prévia](https://jakemerson.github.io/firebr/) • [Repo](https://github.com/jakemerson/firebr)
 
 ---
 
