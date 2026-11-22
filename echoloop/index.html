@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EchoLoop — Gravador Contínuo em Buffer Circular FIFO & Transcrição Inteligente | Desafio 12x12</title>
+  <meta name="description" content="Grave tudo sem lotar o celular. EchoLoop mantém as últimas 2 a 12 horas salvas em buffer circular contínuo com zero-gap, agendador Doze-Safe e transcrição com IA." />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="./assets/img/icon.png">
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"],
+          },
+          colors: {
+            cyan: {
+              400: "#22d3ee",
+              500: "#06b6d4",
+              600: "#0891b2",
+              900: "#164e63",
+              950: "#083344",
+            },
+            emerald: {
+              400: "#34d399",
+              500: "#10b981",
+              600: "#059669",
+              900: "#064e3b",
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    body {
+      background-color: #080C14;
+      color: #f1f5f9;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.10) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(14, 165, 233, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+    .glass-panel {
+      background: rgba(13, 19, 32, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-panel:hover {
+      border-color: rgba(6, 182, 212, 0.3);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 50px -10px rgba(6, 182, 212, 0.25);
+    }
+    .glow-emerald {
+      box-shadow: 0 0 40px -10px rgba(16, 185, 129, 0.25);
+    }
+    .grid-bg {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.02); }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-cyan-500 selection:text-black">
+
+  <!-- Navigation Bar -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-white/5 px-4 lg:px-8 py-3.5 transition-all">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      
+      <!-- Logo -->
+      <a href="./" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-emerald-400 to-sky-400 p-0.5 shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+          <img src="./assets/img/icon.png" alt="EchoLoop Icon" class="w-full h-full rounded-[10px] object-cover" />
+        </div>
+        <div>
+          <span class="text-base font-extrabold tracking-tight text-white flex items-center gap-1.5">
+            EchoLoop
+            <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold">Android</span>
+          </span>
+          <span class="block text-[11px] text-slate-400 leading-tight">Audio Loop Recorder & Vault</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="#como-funciona" class="hover:text-cyan-400 transition-colors">Como Funciona</a>
+        <a href="#recursos" class="hover:text-cyan-400 transition-colors">Recursos</a>
+        <a href="#screenshots" class="hover:text-cyan-400 transition-colors">Screenshots</a>
+        <a href="#arquitetura" class="hover:text-cyan-400 transition-colors">Arquitetura</a>
+        <a href="#planos" class="hover:text-cyan-400 transition-colors">Planos</a>
+        <a href="#faq" class="hover:text-cyan-400 transition-colors">FAQ</a>
+      </nav>
+
+      <!-- CTA Links -->
+      <div class="flex items-center gap-3">
+        <a href="https://jakemerson.github.io/desafio-12x12/" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5 text-slate-400"></i>
+          <span>Vitrine 12x12</span>
+        </a>
+        <a href="#download" 
+           class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 shadow-lg shadow-cyan-500/25 transition-all hover:scale-105 active:scale-95">
+          <i data-lucide="download" class="w-4 h-4 text-slate-950 stroke-[2.5]"></i>
+          <span>Baixar APK (v1.0.0)</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-16 pb-20 px-4 lg:px-8 grid-bg overflow-hidden">
+    <div class="max-w-5xl mx-auto text-center space-y-6">
+      
+      <!-- Challenge Badge -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel text-xs font-medium text-slate-300 border border-white/10 animate-fade-in shadow-inner">
+        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+        <span class="font-semibold text-white">Semana 03</span>
+        <span class="text-slate-500">•</span>
+        <span>Desafio 12 Projetos em 12 Semanas</span>
+        <span class="text-slate-500">|</span>
+        <span class="text-emerald-400 font-semibold flex items-center gap-1">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> 100% Local-First
+        </span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
+        Grave tudo sem lotar o celular.<br />
+        <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
+          Resgate só o que importa.
+        </span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+        O gravador de áudio contínuo em <strong class="text-white">buffer circular FIFO</strong>. Deixe gravando em segundo plano sem medo: o app retém apenas as últimas horas configuradas, recicla os blocos antigos automaticamente e salva qualquer trecho de reunião ou aula no Cofre Permanente com 1 toque.
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-3.5 pt-2">
+        <a href="#download" 
+           class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 shadow-xl shadow-cyan-500/30 transition-all hover:-translate-y-0.5 active:scale-95">
+          <i data-lucide="download" class="w-5 h-5 text-slate-950 stroke-[2.5]"></i>
+          <span>Baixar APK Gratuito (Android)</span>
+        </a>
+        <a href="#download" 
+           class="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl text-sm font-semibold glass-panel hover:bg-white/10 text-slate-200 border border-white/10 transition-all">
+          <i data-lucide="qr-code" class="w-4 h-4 text-cyan-400"></i>
+          <span>Instalar no Android</span>
+        </a>
+      </div>
+
+      <!-- Live Feature Pills -->
+      <div class="pt-8 flex flex-wrap justify-center gap-3 text-xs font-mono text-slate-300">
+        <div class="flex items-center gap-1.5 glass-panel px-3.5 py-1.5 rounded-lg border border-white/5">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-cyan-400"></i>
+          <span>Buffer FIFO Circular</span>
+        </div>
+        <div class="flex items-center gap-1.5 glass-panel px-3.5 py-1.5 rounded-lg border border-white/5">
+          <i data-lucide="moon" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Android Doze-Safe</span>
+        </div>
+        <div class="flex items-center gap-1.5 glass-panel px-3.5 py-1.5 rounded-lg border border-white/5">
+          <i data-lucide="scissors" class="w-3.5 h-3.5 text-cyan-400"></i>
+          <span>Zero-Gap Hot Slicing</span>
+        </div>
+        <div class="flex items-center gap-1.5 glass-panel px-3.5 py-1.5 rounded-lg border border-white/5">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Transcrição IA (BYOK)</span>
+        </div>
+        <div class="flex items-center gap-1.5 glass-panel px-3.5 py-1.5 rounded-lg border border-white/5">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Zero Dados na Nuvem</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Mockup & Showcase Section -->
+  <section id="screenshots" class="py-16 px-4 lg:px-8 border-t border-white/5 bg-[#0A0E17]/60">
+    <div class="max-w-6xl mx-auto space-y-10">
+      
+      <div class="text-center space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Interface Nativa do Aplicativo</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white">Visual Minimalista, Desempenho Cirúrgico</h2>
+        <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+          Projetado no tema escuro OLED para economizar bateria e garantir foco absoluto. Alterne entre as telas abaixo para explorar a experiência real.
+        </p>
+      </div>
+
+      <!-- Tab Buttons -->
+      <div class="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto p-1.5 rounded-2xl glass-panel border border-white/10">
+        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition">
+          <i data-lucide="disc" class="w-3.5 h-3.5"></i>
+          <span>1. Dashboard</span>
+        </button>
+        <button onclick="switchTab('timeline')" id="btn-timeline" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition">
+          <i data-lucide="history" class="w-3.5 h-3.5"></i>
+          <span>2. Timeline FIFO</span>
+        </button>
+        <button onclick="switchTab('vault')" id="btn-vault" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition">
+          <i data-lucide="archive" class="w-3.5 h-3.5"></i>
+          <span>3. Cofre & Player</span>
+        </button>
+        <button onclick="switchTab('scheduler')" id="btn-scheduler" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition">
+          <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+          <span>4. Agendador Doze</span>
+        </button>
+      </div>
+
+      <!-- Mockup Viewer Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-4">
+        
+        <!-- Left: Phone Mockup Frame -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="relative w-[280px] sm:w-[320px] rounded-[42px] p-3.5 bg-gradient-to-b from-slate-700 via-slate-800 to-slate-950 shadow-2xl shadow-cyan-500/20 border border-slate-600/50">
+            <!-- Speaker & Camera Pill -->
+            <div class="absolute top-6 left-1/2 -translate-x-1/2 w-24 h-4 bg-black rounded-full z-20 flex items-center justify-end pr-3">
+              <span class="w-2 h-2 rounded-full bg-slate-900 border border-slate-800"></span>
+            </div>
+            <!-- Screen Container -->
+            <div class="relative w-full aspect-[9/19.5] rounded-[32px] overflow-hidden bg-black border border-slate-900 shadow-inner">
+              <img id="mockup-img" src="./assets/img/screen_01_dashboard.png" alt="EchoLoop Dashboard" class="w-full h-full object-cover transition-opacity duration-300" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Screen Context Explanations -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- Context Card 1: Dashboard -->
+          <div id="card-dashboard" class="tab-card glass-panel rounded-2xl p-6 sm:p-8 space-y-4 border border-cyan-500/30">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/30">
+              <i data-lucide="disc" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-bold text-white">Dashboard com Radar Visual ao Vivo</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              O radar circular central indica em tempo real a integridade da gravação, tempo acumulado na janela e espaço consumido no aparelho. 
+            </p>
+            <ul class="space-y-2 text-xs sm:text-sm text-slate-300 font-mono">
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Indicador de status nativo Foreground Service</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Botão de resgate rápido dos últimos 15 min com 1 toque</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Contador de chunks em buffer e limite configurado</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Context Card 2: Timeline -->
+          <div id="card-timeline" class="tab-card hidden glass-panel rounded-2xl p-6 sm:p-8 space-y-4 border border-cyan-500/30">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+              <i data-lucide="history" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-bold text-white">Timeline FIFO & Rotação Contínua</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Cada bloco de áudio gravado (ex: 5 minutos) é listado cronologicamente com hora de início, término e tamanho. Quando a cota de horas é atingida, o primeiro bloco é suavemente descartado para dar lugar ao novo.
+            </p>
+            <ul class="space-y-2 text-xs sm:text-sm text-slate-300 font-mono">
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-cyan-400"></i>
+                <span>Fatiamento a quente zero-gap sem perda de fala</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-cyan-400"></i>
+                <span>Recorte por intervalo personalizado com slider</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-cyan-400"></i>
+                <span>Recuperação automática de blocos órfãos (Crash-Safe)</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Context Card 3: Vault -->
+          <div id="card-vault" class="tab-card hidden glass-panel rounded-2xl p-6 sm:p-8 space-y-4 border border-cyan-500/30">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center border border-purple-500/30">
+              <i data-lucide="archive" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-bold text-white">Cofre Permanente & Player Avançado</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Tudo o que você salva vai para o Cofre e nunca é apagado pelo buffer. O player integrado conta com controles avançados para produtividade máxima em reuniões longas.
+            </p>
+            <ul class="space-y-2 text-xs sm:text-sm text-slate-300 font-mono">
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-purple-400"></i>
+                <span>Velocidades 1.0x, 1.25x, 1.5x e 2.0x instantâneas</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-purple-400"></i>
+                <span>Saltos rápidos de ±10 segundos e scrubbing milissegundo</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-purple-400"></i>
+                <span>Transcrição de áudio via IA com exportação TXT/MD</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Context Card 4: Scheduler -->
+          <div id="card-scheduler" class="tab-card hidden glass-panel rounded-2xl p-6 sm:p-8 space-y-4 border border-cyan-500/30">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+              <i data-lucide="calendar" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-bold text-white">Agendador Inteligente Doze-Safe</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Defina janelas automáticas de gravação (ex: Segunda a Sexta, das 09:00 às 18:00). Utiliza o subsistema de AlarmManager do Android com acionamento exato mesmo com a tela bloqueada.
+            </p>
+            <ul class="space-y-2 text-xs sm:text-sm text-slate-300 font-mono">
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-amber-400"></i>
+                <span>Alarme nativo exato RTC_WAKEUP (imune ao Doze Mode)</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-amber-400"></i>
+                <span>Modal TimePicker ultra-fluido com gestos e giro infinito</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-amber-400"></i>
+                <span>Auto-stop e salvamento automático sem gastar bateria à noite</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Problem vs Solution Comparison -->
+  <section id="como-funciona" class="py-16 px-4 lg:px-8 border-t border-white/5">
+    <div class="max-w-5xl mx-auto space-y-12">
+      
+      <div class="text-center space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">O Paradigma Antigo vs. EchoLoop</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white">Por que Gravadores Tradicionais Falham?</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
+          Apps comuns gravam um arquivo único e infinito. Se a bateria acaba, o arquivo corrompe. Se você esquece ligado, lota seu armazenamento. O EchoLoop reinventou o fluxo.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Gravadores Comuns -->
+        <div class="glass-panel rounded-2xl p-6 sm:p-8 space-y-4 border-red-500/20 bg-red-950/10 relative overflow-hidden">
+          <div class="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center">
+            <i data-lucide="x-circle" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Gravadores Convencionais</h3>
+          <ul class="space-y-3 text-sm text-slate-300">
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="x" class="w-4 h-4 text-red-400 mt-0.5 shrink-0"></i>
+              <span><strong>Arquivos de 6GB a 10GB:</strong> Geram blocos gigantescos que você nunca consegue enviar ou ouvir.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="x" class="w-4 h-4 text-red-400 mt-0.5 shrink-0"></i>
+              <span><strong>Risco de Corrupção Fatal:</strong> Se o app fechar ou a bateria acabar, o cabeçalho MP4 não fecha e todo o áudio é perdido.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="x" class="w-4 h-4 text-red-400 mt-0.5 shrink-0"></i>
+              <span><strong>Você Esquece de Gravar:</strong> O momento chave da reunião acontece quando o gravador estava desligado.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="x" class="w-4 h-4 text-red-400 mt-0.5 shrink-0"></i>
+              <span><strong>Drenagem Severa de Energia:</strong> Processos pesados que superaquecem o dispositivo móvel.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- EchoLoop -->
+        <div class="glass-panel rounded-2xl p-6 sm:p-8 space-y-4 border-cyan-500/40 bg-cyan-950/20 relative overflow-hidden shadow-xl shadow-cyan-500/10">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">A Revolução do EchoLoop</h3>
+          <ul class="space-y-3 text-sm text-slate-200">
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"></i>
+              <span><strong>Buffer Circular FIFO:</strong> Mantém fixo apenas 2h a 12h de áudio em memória (~80MB para 2h), reciclando automaticamente.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"></i>
+              <span><strong>Journaling ADTS Crash-Safe:</strong> Cada chunk é gravado com frames AAC auto-contidos. Recuperação garantida pós-queda.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"></i>
+              <span><strong>Resgate Retroativo:</strong> Aconteceu algo genial? Toque em "Resgatar Últimos 15 min" e salve no cofre.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"></i>
+              <span><strong>Serviço Nativo Otimizado:</strong> Roda em background consumindo o mínimo de bateria com suporte pleno a Doze Mode.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Core Features Grid -->
+  <section id="recursos" class="py-16 px-4 lg:px-8 border-t border-white/5 bg-[#090D18]/70">
+    <div class="max-w-6xl mx-auto space-y-12">
+      
+      <div class="text-center space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Capacidades Poderosas</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white">Engenharia de Ponta no Seu Bolso</h2>
+        <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+          Construído com tecnologia nativa de ponta a ponta para entregar estabilidade industrial.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Feature 1 -->
+        <div class="glass-panel rounded-2xl p-6 space-y-3 hover:border-cyan-500/40 transition-all hover:-translate-y-1">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">Buffer Circular FIFO</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+            Configure a retenção ideal (2h a 12h). Os chunks mais antigos são excluídos suavemente na medida em que novos blocos entram no anel.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="glass-panel rounded-2xl p-6 space-y-3 hover:border-emerald-500/40 transition-all hover:-translate-y-1">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="scissors" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">Zero-Gap Hot Slicing</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+            Motor nativo Kotlin em MediaCodec que alterna os arquivos em tempo real sem perder um único milissegundo de áudio entre as transições.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="glass-panel rounded-2xl p-6 space-y-3 hover:border-sky-500/40 transition-all hover:-translate-y-1">
+          <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center">
+            <i data-lucide="moon" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">Android Doze-Safe</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+            Alarmes exatos com <code class="text-cyan-300 font-mono text-xs">AlarmManager</code> nativo. O agendador inicia e encerra gravações no segundo exato com o celular bloqueado.
+          </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="glass-panel rounded-2xl p-6 space-y-3 hover:border-purple-500/40 transition-all hover:-translate-y-1">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+            <i data-lucide="play" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">Player com Velocidade & Skip</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+            Acelere reuniões longas em 1.25x, 1.5x ou 2.0x, salte 10s para frente/trás com 1 toque e navegue com precisão pela barra de progresso.
+          </p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="glass-panel rounded-2xl p-6 space-y-3 hover:border-amber-500/40 transition-all hover:-translate-y-1">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+            <i data-lucide="sparkles" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">Transcrição IA Inteligente (BYOK)</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+            Conecte sua própria chave de API (Groq Whisper-v3 a 200x tempo real, Deepgram, OpenAI) e obtenha transcrições perfeitas em Português e Inglês.
+          </p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="glass-panel rounded-2xl p-6 space-y-3 hover:border-emerald-500/40 transition-all hover:-translate-y-1">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="shield" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white">100% Privado & Seguro</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+            Seus áudios nunca saem do seu aparelho sem sua autorização explícita. Sem cadastro obrigatório, sem servidores centrais escutando sua vida.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Architecture Deep-Dive -->
+  <section id="arquitetura" class="py-16 px-4 lg:px-8 border-t border-white/5">
+    <div class="max-w-5xl mx-auto space-y-10">
+      
+      <div class="text-center space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Arquitetura de Software</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white">Pipeline de Gravação Industrial</h2>
+        <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+          Entenda como o fluxo de dados trafega de ponta a ponta sem degradação de performance.
+        </p>
+      </div>
+
+      <!-- Architecture Pipeline Card -->
+      <div class="glass-panel rounded-2xl p-6 sm:p-8 space-y-6 border border-white/10 font-mono">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+          
+          <div class="p-4 rounded-xl bg-white/5 border border-white/5 space-y-2">
+            <div class="text-xs text-cyan-400 font-bold">1. CAPTURA NATIVA</div>
+            <div class="text-sm text-white font-semibold">AudioRecord & MediaCodec</div>
+            <p class="text-[11px] text-slate-400 font-sans">Gravação PCM direta e codificação a quente em AAC ADTS sem passar pela thread JS.</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-white/5 border border-white/5 space-y-2">
+            <div class="text-xs text-emerald-400 font-bold">2. CHUNKING FIFO</div>
+            <div class="text-sm text-white font-semibold">Fatiamento Zero-Gap</div>
+            <p class="text-[11px] text-slate-400 font-sans">Fechamento do bloco atual e abertura do próximo de forma atômica e journalizada.</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-white/5 border border-white/5 space-y-2">
+            <div class="text-xs text-purple-400 font-bold">3. COFRE & MESCLA</div>
+            <div class="text-sm text-white font-semibold">M4A Binary Merger</div>
+            <p class="text-[11px] text-slate-400 font-sans">Recorte de período selecionado e união binária ultrarrápida em arquivo definitivo.</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-white/5 border border-white/5 space-y-2">
+            <div class="text-xs text-amber-400 font-bold">4. TRANSCRIÇÃO IA</div>
+            <div class="text-sm text-white font-semibold">Multi-Provider Hub</div>
+            <p class="text-[11px] text-slate-400 font-sans">Processamento inteligente via Groq Whisper, Deepgram ou OpenAI com BYOK.</p>
+          </div>
+
+        </div>
+
+        <div class="p-4 rounded-xl bg-black/40 border border-white/5 text-xs text-slate-300 space-y-2">
+          <div class="flex items-center gap-2 text-cyan-400 font-bold">
+            <i data-lucide="terminal" class="w-4 h-4"></i>
+            <span>Stack de Tecnologias Utilizada:</span>
+          </div>
+          <div class="flex flex-wrap gap-2 text-[11px] text-slate-400 font-sans">
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">React Native 0.86 (New Architecture)</span>
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">Expo SDK 57</span>
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">Kotlin Native Module (`echo-recorder`)</span>
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">Android Foreground Service</span>
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">AlarmManager RTC_WAKEUP</span>
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">Tailwind CSS</span>
+            <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">EAS Cloud Build</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Pricing & Paywall Section -->
+  <section id="planos" class="py-16 px-4 lg:px-8 border-t border-white/5 bg-[#0A0E17]/60">
+    <div class="max-w-5xl mx-auto space-y-12">
+      
+      <div class="text-center space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Modelo Justo & Sustentável</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white">Comece Grátis, Faça Upgrade Quando Quiser</h2>
+        <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+          O plano gratuito é 100% funcional para uso diário. Recursos profissionais desbloqueiam retenções gigantes e automação ilimitada.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
+        
+        <!-- Plano Free -->
+        <div class="glass-panel rounded-2xl p-6 sm:p-8 flex flex-col justify-between border-white/10 space-y-6">
+          <div class="space-y-4">
+            <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/5 text-slate-300 border border-white/10 font-bold">
+              Plano Gratuito
+            </span>
+            <div>
+              <div class="text-3xl font-black text-white">R$ 0</div>
+              <div class="text-xs text-slate-400">Para sempre, sem pegadinhas</div>
+            </div>
+            <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300">
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Buffer circular de até <strong>2 horas contínuas</strong></span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Cofre local ilimitado para gravações salvas</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Player avançado com velocidades (1.0x a 2.0x)</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Transcrição com IA ilimitada (sua chave de API)</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                <span>Agendamento de 1 janela automática ativa</span>
+              </li>
+            </ul>
+          </div>
+          
+          <a href="#download" 
+             class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold glass-panel hover:bg-white/10 text-white border border-white/10 transition">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>Baixar Versão Gratuita</span>
+          </a>
+        </div>
+
+        <!-- Plano Pro -->
+        <div class="glass-panel rounded-2xl p-6 sm:p-8 flex flex-col justify-between border-cyan-500/50 bg-gradient-to-b from-cyan-950/30 to-slate-900/50 relative overflow-hidden shadow-2xl shadow-cyan-500/15 space-y-6">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-bold">
+                EchoLoop PRO
+              </span>
+              <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">
+                Mais Popular
+              </span>
+            </div>
+
+            <div>
+              <div class="flex items-baseline gap-1">
+                <span class="text-3xl font-black text-white">R$ 9,90</span>
+                <span class="text-xs text-slate-400">/mês ou R$ 79,90/ano</span>
+              </div>
+              <div class="text-xs text-cyan-400 mt-0.5">Opção de Acesso Vitalício por R$ 149,90</div>
+            </div>
+
+            <ul class="space-y-2.5 text-xs sm:text-sm text-slate-200">
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-cyan-400"></i>
+                <span>Buffer circular estendido de <strong>até 12 horas</strong></span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-cyan-400"></i>
+                <span>Múltiplas regras de agendamento Doze-Safe simultâneas</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-cyan-400"></i>
+                <span>Exportação em múltiplos formatos (.m4a, .wav, .txt, .md)</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-cyan-400"></i>
+                <span>Modo Sentinela Inteligente (ativação silenciosa)</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-cyan-400"></i>
+                <span>Suporte prioritário e acesso antecipado a atualizações</span>
+              </li>
+            </ul>
+          </div>
+
+          <a href="#download" 
+             class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 shadow-lg shadow-cyan-500/25 transition">
+            <i data-lucide="sparkles" class="w-4 h-4 stroke-[2.5]"></i>
+            <span>Instalar e Testar PRO</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-16 px-4 lg:px-8 border-t border-white/5">
+    <div class="max-w-4xl mx-auto space-y-10">
+      
+      <div class="text-center space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Tire Suas Dúvidas</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white">Perguntas Frequentes</h2>
+      </div>
+
+      <div class="space-y-4">
+        
+        <details class="glass-panel rounded-2xl p-5 border border-white/10 group [&_summary::-webkit-details-marker]:hidden cursor-pointer transition-all">
+          <summary class="flex items-center justify-between font-bold text-white text-sm sm:text-base">
+            <span>Como o buffer circular economiza o espaço do celular?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="text-slate-300 text-xs sm:text-sm pt-3 leading-relaxed">
+            Em vez de salvar um arquivo contínuo infinito, o EchoLoop grava pequenos chunks AAC de 5 minutos. Ele mantém exatamente a janela de tempo que você definiu (ex: 2 horas, ou seja, 24 chunks). Ao completar o 25º chunk, o 1º é automaticamente apagado. O espaço nunca cresce além do limite fixado (~80 MB para 2h).
+          </p>
+        </details>
+
+        <details class="glass-panel rounded-2xl p-5 border border-white/10 group [&_summary::-webkit-details-marker]:hidden cursor-pointer transition-all">
+          <summary class="flex items-center justify-between font-bold text-white text-sm sm:text-base">
+            <span>O que acontece se meu celular desligar de repente por falta de bateria?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="text-slate-300 text-xs sm:text-sm pt-3 leading-relaxed">
+            Graças ao sistema de Journaling ADTS nativo, cada bloco de áudio é salvo em frames autocontidos (<code class="text-cyan-300 font-mono">.aac.part</code>). Ao ligar o celular novamente, o mecanismo de Orphan Recovery reconstrói o arquivo até o último segundo gravado. Zero corrupção de arquivos.
+          </p>
+        </details>
+
+        <details class="glass-panel rounded-2xl p-5 border border-white/10 group [&_summary::-webkit-details-marker]:hidden cursor-pointer transition-all">
+          <summary class="flex items-center justify-between font-bold text-white text-sm sm:text-base">
+            <span>O aplicativo grava com a tela apagada ou quando o Android entra em Doze Mode?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="text-slate-300 text-xs sm:text-sm pt-3 leading-relaxed">
+            Sim! O EchoLoop utiliza um Android Foreground Service registrado no manifesto com WakeLock e canal contínuo de microfone. Além disso, as tarefas de agendamento utilizam o subsistema nativo <code class="text-cyan-300 font-mono">AlarmManager.setExactAndAllowWhileIdle</code>, garantindo que o alarme toque no horário correto mesmo no sono mais profundo do sistema operacional.
+          </p>
+        </details>
+
+        <details class="glass-panel rounded-2xl p-5 border border-white/10 group [&_summary::-webkit-details-marker]:hidden cursor-pointer transition-all">
+          <summary class="flex items-center justify-between font-bold text-white text-sm sm:text-base">
+            <span>Como funciona a transcrição com IA sem mensalidades ocultas?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+          </summary>
+          <p class="text-slate-300 text-xs sm:text-sm pt-3 leading-relaxed">
+            O EchoLoop adota a filosofia BYOK (Bring Your Own Key). Você pode colar sua chave de API gratuita do Groq Cloud (com Whisper-large-v3 rodando a 200x tempo real) ou Deepgram/OpenAI. As requisições saem diretamente do seu telefone para a API do provedor escolhido. O criador do app não tem acesso nem taxa sobre suas transcrições.
+          </p>
+        </details>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Final CTA Banner -->
+  <section class="py-20 px-4 lg:px-8 border-t border-white/5 relative overflow-hidden bg-gradient-to-b from-[#090D18] to-[#04060A]">
+    <div class="max-w-4xl mx-auto glass-panel rounded-3xl p-8 sm:p-14 text-center space-y-6 border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 relative">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 to-emerald-400 p-0.5 mx-auto shadow-xl shadow-cyan-500/30">
+        <img src="./assets/img/icon.png" alt="EchoLoop Icon" class="w-full h-full rounded-[14px] object-cover" />
+      </div>
+
+      <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+        Nunca mais perca uma decisão importante em reuniões.
+      </h2>
+
+      <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+        Instale agora no seu aparelho Android em menos de 1 minuto. Sem contas obrigatórias, sem anúncios invasivos e 100% focado em produtividade.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+        <a href="#download" 
+           class="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl text-sm font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 shadow-xl shadow-cyan-500/30 transition-all hover:scale-105 active:scale-95">
+          <i data-lucide="download" class="w-5 h-5 text-slate-950 stroke-[2.5]"></i>
+          <span>Baixar APK v1.0.0 Oficial</span>
+        </a>
+        <a href="https://jakemerson.github.io/desafio-12x12/" 
+           class="inline-flex items-center gap-2 px-6 py-4 rounded-xl text-sm font-semibold glass-panel hover:bg-white/10 text-slate-200 border border-white/10 transition-all">
+          <i data-lucide="layout-grid" class="w-4 h-4 text-cyan-400"></i>
+          <span>Explorar Vitrine 12x12</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-10 px-4 lg:px-8 glass-panel text-slate-400 text-xs">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <div class="flex items-center gap-3">
+        <img src="./assets/img/icon.png" alt="EchoLoop" class="w-6 h-6 rounded-md object-cover" />
+        <span class="font-bold text-white">EchoLoop</span>
+        <span>•</span>
+        <span>Projeto 03 do Desafio 12x12</span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-6 font-medium">
+        <a href="https://jakemerson.github.io/desafio-12x12/" class="hover:text-cyan-400 transition-colors">Vitrine Oficial</a>
+        <a href="https://github.com/jakemerson" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors">GitHub</a>
+        <a href="#como-funciona" class="hover:text-cyan-400 transition-colors">Como Funciona</a>
+        <a href="#planos" class="hover:text-cyan-400 transition-colors">Planos</a>
+      </div>
+
+      <div class="text-slate-500 text-[11px]">
+        Desenvolvido com ⚡ Ship Fast por <a href="https://github.com/jakemerson" class="text-slate-400 hover:text-white underline">Emerson Menezes</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Script for Mockup Tab Switching -->
+  <script>
+    lucide.createIcons();
+
+    const tabs = {
+      dashboard: {
+        img: "./assets/img/screen_01_dashboard.png",
+        btnId: "btn-dashboard",
+        cardId: "card-dashboard"
+      },
+      timeline: {
+        img: "./assets/img/screen_02_timeline.png",
+        btnId: "btn-timeline",
+        cardId: "card-timeline"
+      },
+      vault: {
+        img: "./assets/img/screen_03_vault.png",
+        btnId: "btn-vault",
+        cardId: "card-vault"
+      },
+      scheduler: {
+        img: "./assets/img/screen_04_scheduler.jpg",
+        btnId: "btn-scheduler",
+        cardId: "card-scheduler"
+      }
+    };
+
+    function switchTab(tabKey) {
+      const selected = tabs[tabKey];
+      if (!selected) return;
+
+      // Update image with smooth fade
+      const img = document.getElementById("mockup-img");
+      img.style.opacity = "0.2";
+      setTimeout(() => {
+        img.src = selected.img;
+        img.style.opacity = "1";
+      }, 150);
+
+      // Update buttons
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.className = "tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition";
+      });
+      const activeBtn = document.getElementById(selected.btnId);
+      if (activeBtn) {
+        activeBtn.className = "tab-btn flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition";
+      }
+
+      // Update context cards
+      document.querySelectorAll(".tab-card").forEach(card => {
+        card.classList.add("hidden");
+      });
+      const activeCard = document.getElementById(selected.cardId);
+      if (activeCard) {
+        activeCard.classList.remove("hidden");
+      }
+    }
+  </script>
+
+</body>
+</html>
